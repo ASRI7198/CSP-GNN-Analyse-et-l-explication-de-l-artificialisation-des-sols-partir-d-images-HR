@@ -1,0 +1,98 @@
+[
+  [
+    {
+      "motif_id": 1,
+      "score": 1.4393471303719707e-07,
+      "size": 2,
+      "Relation": [
+        "7207/2021/03 --- Adjacence ---> 7210/2021/03 avec score = 1.0"
+      ]
+    },
+    {
+      "Node": "7207",
+      "Date": "2021/03",
+      "Classe_String": "Espaces ouverts, sans ou avec peu de vegetation",
+      "Classe_int": 5,
+      "Aire": 8040.8034953872175,
+      "Perimetre": 1198.3578481738823,
+      "Largeur": 118.0,
+      "Hauteur": 188.0,
+      "Rectangularity": 0.3624595877834122,
+      "Elongation": 1.5932203389830508,
+      "I_Miller": 0.0703616902820662,
+      "Mean": 49.042,
+      "std": 14.455,
+      "variance": 209.75,
+      "centroid": "POINT (2739.070599135269 -5311.153366275479)",
+      "Nbr_Voisins": 4,
+      "surface_voisins": 47604.0
+    },
+    {
+      "Node": "7210",
+      "Date": "2021/03",
+      "Classe_String": "Espaces ouverts, sans ou avec peu de vegetation",
+      "Classe_int": 5,
+      "Aire": 31010.98057487112,
+      "Perimetre": 3160.1448063177518,
+      "Largeur": 192.0,
+      "Hauteur": 335.0,
+      "Rectangularity": 0.48213589202225,
+      "Elongation": 1.7447916666666667,
+      "I_Miller": 0.0390221681272369,
+      "Mean": 62.654,
+      "std": 17.63,
+      "variance": 312.038,
+      "centroid": "POINT (2955.413068545804 -5270.372325432415)",
+      "Nbr_Voisins": 13,
+      "surface_voisins": 232702.0
+    }
+  ],
+  [
+    {
+      "motif_id": 2,
+      "score": 1.2799476678537758e-07,
+      "size": 2,
+      "Relation": [
+        "4994/2019/03 --- Dérivation ---> 4990/2018/11 avec score = 0.7348018119736712"
+      ]
+    },
+    {
+      "Node": "4994",
+      "Date": "2019/03",
+      "Classe_String": "Chantiers",
+      "Classe_int": 7,
+      "Aire": 1827.681616021153,
+      "Perimetre": 354.4870000351195,
+      "Largeur": 26.0,
+      "Hauteur": 109.0,
+      "Rectangularity": 0.6449123556884804,
+      "Elongation": 4.1923076923076925,
+      "I_Miller": 0.1827720492838334,
+      "Mean": 68.366,
+      "std": 26.6,
+      "variance": 715.611,
+      "centroid": "POINT (473.4201086956522 -4043.6478260869567)",
+      "Nbr_Voisins": 4,
+      "surface_voisins": 37034.0
+    },
+    {
+      "Node": "4990",
+      "Date": "2018/11",
+      "Classe_String": "Chantiers",
+      "Classe_int": 7,
+      "Aire": 1253.551199204357,
+      "Perimetre": 346.6476671870457,
+      "Largeur": 35.0,
+      "Hauteur": 78.0,
+      "Rectangularity": 0.4591762634448194,
+      "Elongation": 2.2285714285714286,
+      "I_Miller": 0.1310917547765929,
+      "Mean": 87.688,
+      "std": 13.799,
+      "variance": 193.567,
+      "centroid": "POINT (454.4960380348653 -4027.893026941363)",
+      "Nbr_Voisins": 4,
+      "surface_voisins": 30635.0
+    }
+  ]
+]

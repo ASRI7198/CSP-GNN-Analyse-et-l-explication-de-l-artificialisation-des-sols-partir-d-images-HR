@@ -1,0 +1,523 @@
+[
+  [
+    {
+      "motif_id": 1,
+      "score": 3.207742338418029e-08,
+      "size": 2,
+      "Relation": [
+        "7925/2020/03 --- Dérivation ---> 6717/2019/03 avec score = 0.43581374189098354"
+      ]
+    },
+    {
+      "Node": "7925",
+      "Date": "2020/03",
+      "Classe_String": "Forets",
+      "Classe_int": 4,
+      "Aire": 1766.096187179699,
+      "Perimetre": 605.7103169605004,
+      "Largeur": 76.0,
+      "Hauteur": 139.0,
+      "Rectangularity": 0.1671806311226523,
+      "Elongation": 1.8289473684210527,
+      "I_Miller": 0.0604914890230607,
+      "Mean": 95.197,
+      "std": 11.846,
+      "variance": 141.209,
+      "centroid": "POINT (2642.5258717660295 -5304.470191226097)",
+      "Nbr_Voisins": 6,
+      "surface_voisins": 32171.0
+    },
+    {
+      "Node": "6717",
+      "Date": "2019/03",
+      "Classe_String": "Forets",
+      "Classe_int": 4,
+      "Aire": 5135.386771926464,
+      "Perimetre": 1254.009746412146,
+      "Largeur": 173.0,
+      "Hauteur": 217.0,
+      "Rectangularity": 0.1367940857176544,
+      "Elongation": 1.254335260115607,
+      "I_Miller": 0.0410375285839955,
+      "Mean": 83.903,
+      "std": 29.482,
+      "variance": 873.482,
+      "centroid": "POINT (2506.4013539651837 -5134.402321083172)",
+      "Nbr_Voisins": 10,
+      "surface_voisins": 63095.0
+    }
+  ],
+  [
+    {
+      "motif_id": 2,
+      "score": 1.8676750812574028e-08,
+      "size": 2,
+      "Relation": [
+        "816/2019/03 --- Dérivation ---> 790/2020/03 avec score = 0.5661634359025842"
+      ]
+    },
+    {
+      "Node": "816",
+      "Date": "2019/03",
+      "Classe_String": "Forets",
+      "Classe_int": 4,
+      "Aire": 3331.546981293184,
+      "Perimetre": 902.9339648535732,
+      "Largeur": 83.0,
+      "Hauteur": 85.0,
+      "Rectangularity": 0.4722249441946398,
+      "Elongation": 1.0240963855421688,
+      "I_Miller": 0.0513503994729182,
+      "Mean": 78.223,
+      "std": 19.555,
+      "variance": 385.064,
+      "centroid": "POINT (4042.453190220632 -918.6639833035182)",
+      "Nbr_Voisins": 7,
+      "surface_voisins": 46399.0
+    },
+    {
+      "Node": "790",
+      "Date": "2020/03",
+      "Classe_String": "Forets",
+      "Classe_int": 4,
+      "Aire": 1758.150917154842,
+      "Perimetre": 986.5590801289256,
+      "Largeur": 65.0,
+      "Hauteur": 74.0,
+      "Rectangularity": 0.3655199411964328,
+      "Elongation": 1.1384615384615384,
+      "I_Miller": 0.0226996844125087,
+      "Mean": 75.642,
+      "std": 14.71,
+      "variance": 216.6,
+      "centroid": "POINT (4009.661581920904 -842.2468926553672)",
+      "Nbr_Voisins": 3,
+      "surface_voisins": 9656.0
+    }
+  ],
+  [
+    {
+      "motif_id": 3,
+      "score": 1.3097976037101944e-08,
+      "size": 2,
+      "Relation": [
+        "1786/2023/09 --- Dérivation ---> 1833/2024/01 avec score = 0.5046016290165382"
+      ]
+    },
+    {
+      "Node": "1786",
+      "Date": "2023/09",
+      "Classe_String": "Espaces ouverts, sans ou avec peu de vegetation",
+      "Classe_int": 5,
+      "Aire": 1550.5500724519256,
+      "Perimetre": 601.938130891299,
+      "Largeur": 67.0,
+      "Hauteur": 90.0,
+      "Rectangularity": 0.2571393154978317,
+      "Elongation": 1.3432835820895523,
+      "I_Miller": 0.0537764276572118,
+      "Mean": 53.499,
+      "std": 16.771,
+      "variance": 282.542,
+      "centroid": "POINT (7641.732543241512 -99.1739269698911)",
+      "Nbr_Voisins": 5,
+      "surface_voisins": 14697.0
+    },
+    {
+      "Node": "1833",
+      "Date": "2024/01",
+      "Classe_String": "Réseaux routier et ferroviaire et espaces associes",
+      "Classe_int": 3,
+      "Aire": 3533.1880897594674,
+      "Perimetre": 1176.0235381735938,
+      "Largeur": 102.0,
+      "Hauteur": 128.0,
+      "Rectangularity": 0.2706179603063317,
+      "Elongation": 1.2549019607843137,
+      "I_Miller": 0.0321029241962305,
+      "Mean": 54.144,
+      "std": 24.052,
+      "variance": 583.763,
+      "centroid": "POINT (7554.61920157436 -81.63466404273264)",
+      "Nbr_Voisins": 7,
+      "surface_voisins": 18295.0
+    }
+  ],
+  [
+    {
+      "motif_id": 4,
+      "score": 3.6952947368718014e-08,
+      "size": 2,
+      "Relation": [
+        "5866/2016/11 --- Adjacence ---> 5859/2016/11 avec score = 1.0"
+      ]
+    },
+    {
+      "Node": "5866",
+      "Date": "2016/11",
+      "Classe_String": "Réseaux routier et ferroviaire et espaces associes",
+      "Classe_int": 3,
+      "Aire": 4743.0318705597365,
+      "Perimetre": 414.6476271140007,
+      "Largeur": 88.0,
+      "Hauteur": 68.0,
+      "Rectangularity": 0.7926189623261591,
+      "Elongation": 1.2941176470588236,
+      "I_Miller": 0.3466630375429785,
+      "Mean": 149.97,
+      "std": 14.134,
+      "variance": 199.785,
+      "centroid": "POINT (6919.56219895288 -4628.953612565445)",
+      "Nbr_Voisins": 4,
+      "surface_voisins": 8456.0
+    },
+    {
+      "Node": "5859",
+      "Date": "2016/11",
+      "Classe_String": "Réseaux routier et ferroviaire et espaces associes",
+      "Classe_int": 3,
+      "Aire": 1707.4914888210124,
+      "Perimetre": 454.2727344524967,
+      "Largeur": 96.0,
+      "Hauteur": 112.0,
+      "Rectangularity": 0.1588068721001685,
+      "Elongation": 1.1666666666666667,
+      "I_Miller": 0.1039764700576332,
+      "Mean": 31.818,
+      "std": 12.24,
+      "variance": 150.127,
+      "centroid": "POINT (6884.194589877836 -4588.8961605584645)",
+      "Nbr_Voisins": 8,
+      "surface_voisins": 32043.0
+    }
+  ],
+  [
+    {
+      "motif_id": 5,
+      "score": 3.861907060809244e-08,
+      "size": 2,
+      "Relation": [
+        "3819/2020/11 --- Dérivation ---> 3782/2021/03 avec score = 0.509735409706229"
+      ]
+    },
+    {
+      "Node": "3819",
+      "Date": "2020/11",
+      "Classe_String": "Zones Urbanisees",
+      "Classe_int": 0,
+      "Aire": 14244.994100207296,
+      "Perimetre": 2459.6988141241623,
+      "Largeur": 249.0,
+      "Hauteur": 161.0,
+      "Rectangularity": 0.3553342338348997,
+      "Elongation": 1.546583850931677,
+      "I_Miller": 0.0295875002243153,
+      "Mean": 89.927,
+      "std": 46.868,
+      "variance": 2204.438,
+      "centroid": "POINT (6145.046056760338 -2280.073112056342)",
+      "Nbr_Voisins": 10,
+      "surface_voisins": 40808.0
+    },
+    {
+      "Node": "3782",
+      "Date": "2021/03",
+      "Classe_String": "Zones Urbanisees",
+      "Classe_int": 0,
+      "Aire": 5915.134203103991,
+      "Perimetre": 1949.600046238512,
+      "Largeur": 143.0,
+      "Hauteur": 193.0,
+      "Rectangularity": 0.214324222004565,
+      "Elongation": 1.3496503496503496,
+      "I_Miller": 0.0195561524188887,
+      "Mean": 59.423,
+      "std": 29.76,
+      "variance": 886.167,
+      "centroid": "POINT (6013.889756507137 -2307.556255247691)",
+      "Nbr_Voisins": 8,
+      "surface_voisins": 51265.0
+    }
+  ],
+  [
+    {
+      "motif_id": 6,
+      "score": 1.0121381421868136e-07,
+      "size": 2,
+      "Relation": [
+        "6105/2021/11 --- Adjacence ---> 6113/2021/11 avec score = 1.0"
+      ]
+    },
+    {
+      "Node": "6105",
+      "Date": "2021/11",
+      "Classe_String": "Espaces ouverts, sans ou avec peu de vegetation",
+      "Classe_int": 5,
+      "Aire": 1238.6514323817146,
+      "Perimetre": 331.0359188190854,
+      "Largeur": 51.0,
+      "Hauteur": 73.0,
+      "Rectangularity": 4711.309141940657,
+      "Elongation": 1.4313725490196079,
+      "I_Miller": 0.1420393692031047,
+      "Mean": 63.692,
+      "std": 10.744,
+      "variance": 115.871,
+      "centroid": "POINT (4711.309141940657 -4742.925821972734)",
+      "Nbr_Voisins": 3,
+      "surface_voisins": 205337.0
+    },
+    {
+      "Node": "6113",
+      "Date": "2021/11",
+      "Classe_String": "Espaces ouverts, sans ou avec peu de vegetation",
+      "Classe_int": 5,
+      "Aire": 1210.8388748024472,
+      "Perimetre": 442.406614095526,
+      "Largeur": 60.0,
+      "Hauteur": 49.0,
+      "Rectangularity": 4733.920016406891,
+      "Elongation": 1.2244897959183674,
+      "I_Miller": 0.0777415145999106,
+      "Mean": 32.053,
+      "std": 5.995,
+      "variance": 36.877,
+      "centroid": "POINT (4733.920016406891 -4797.850287120591)",
+      "Nbr_Voisins": 2,
+      "surface_voisins": 203481.0
+    }
+  ],
+  [
+    {
+      "motif_id": 7,
+      "score": 2.2151009915205577e-08,
+      "size": 2,
+      "Relation": [
+        "3954/2015/05 --- Dérivation ---> 3181/2015/01 avec score = 0.5625386847162474"
+      ]
+    },
+    {
+      "Node": "3954",
+      "Date": "2015/05",
+      "Classe_String": "Zones Urbanisees",
+      "Classe_int": 0,
+      "Aire": 2121.700329077227,
+      "Perimetre": 637.9916148878291,
+      "Largeur": 82.0,
+      "Hauteur": 72.0,
+      "Rectangularity": 0.3593665869033243,
+      "Elongation": 1.1388888888888888,
+      "I_Miller": 0.0655034185755555,
+      "Mean": 58.121,
+      "std": 28.732,
+      "variance": 829.241,
+      "centroid": "POINT (5987.986423220974 -3039.3932584269664)",
+      "Nbr_Voisins": 6,
+      "surface_voisins": 33147.0
+    },
+    {
+      "Node": "3181",
+      "Date": "2015/01",
+      "Classe_String": "Zones Urbanisees",
+      "Classe_int": 0,
+      "Aire": 3955.342139522292,
+      "Perimetre": 1154.0903596074274,
+      "Largeur": 93.0,
+      "Hauteur": 121.0,
+      "Rectangularity": 0.3514922366944186,
+      "Elongation": 1.3010752688172043,
+      "I_Miller": 0.0373176505591916,
+      "Mean": 64.832,
+      "std": 27.712,
+      "variance": 768.216,
+      "centroid": "POINT (5983.868407835259 -2957.854846810648)",
+      "Nbr_Voisins": 6,
+      "surface_voisins": 21630.0
+    }
+  ],
+  [
+    {
+      "motif_id": 8,
+      "score": 1.7845041000441597e-08,
+      "size": 2,
+      "Relation": [
+        "8010/2020/03 --- Dérivation ---> 7988/2019/03 avec score = 0.8703285798730026"
+      ]
+    },
+    {
+      "Node": "8010",
+      "Date": "2020/03",
+      "Classe_String": "Zones Urbanisees",
+      "Classe_int": 0,
+      "Aire": 2116.732907156731,
+      "Perimetre": 554.5136682294559,
+      "Largeur": 106.0,
+      "Hauteur": 41.0,
+      "Rectangularity": 0.4870531309610518,
+      "Elongation": 2.5853658536585367,
+      "I_Miller": 0.0865070324931656,
+      "Mean": 164.45,
+      "std": 35.629,
+      "variance": 1274.258,
+      "centroid": "POINT (5586.922336931018 -5164.173392773346)",
+      "Nbr_Voisins": 2,
+      "surface_voisins": 21072.0
+    },
+    {
+      "Node": "7988",
+      "Date": "2019/03",
+      "Classe_String": "Zones Urbanisees",
+      "Classe_int": 0,
+      "Aire": 2615.372003360412,
+      "Perimetre": 628.2458689129761,
+      "Largeur": 115.0,
+      "Hauteur": 54.0,
+      "Rectangularity": 0.4211549119743013,
+      "Elongation": 2.1296296296296298,
+      "I_Miller": 0.083269134652074,
+      "Mean": 155.453,
+      "std": 40.795,
+      "variance": 1666.961,
+      "centroid": "POINT (5579.971705279149 -5168.002848461831)",
+      "Nbr_Voisins": 3,
+      "surface_voisins": 22484.0
+    }
+  ],
+  [
+    {
+      "motif_id": 9,
+      "score": 4.9470646246163597e-08,
+      "size": 3,
+      "Relation": [
+        "7384/2018/11 --- Dérivation ---> 7381/2019/03 avec score = 0.6446868844047675",
+        "7384/2018/11 --- Dérivation ---> 7355/2019/03 avec score = 0.5538879409858992"
+      ]
+    },
+    {
+      "Node": "7384",
+      "Date": "2018/11",
+      "Classe_String": "Forets",
+      "Classe_int": 4,
+      "Aire": 7383.236387440138,
+      "Perimetre": 1351.4742066982,
+      "Largeur": 149.0,
+      "Hauteur": 124.0,
+      "Rectangularity": 0.3996122747044889,
+      "Elongation": 1.2016129032258065,
+      "I_Miller": 0.050797356768792,
+      "Mean": 46.335,
+      "std": 21.653,
+      "variance": 469.774,
+      "centroid": "POINT (6304.265101574061 -4892.412417597202)",
+      "Nbr_Voisins": 7,
+      "surface_voisins": 33635.0
+    },
+    {
+      "Node": "7381",
+      "Date": "2019/03",
+      "Classe_String": "Zones Urbanisees",
+      "Classe_int": 0,
+      "Aire": 4148.041799689558,
+      "Perimetre": 873.0274346874605,
+      "Largeur": 120.0,
+      "Hauteur": 99.0,
+      "Rectangularity": 0.3491617676506361,
+      "Elongation": 1.2121212121212122,
+      "I_Miller": 0.068390724595993,
+      "Mean": 77.72,
+      "std": 38.123,
+      "variance": 1454.733,
+      "centroid": "POINT (6439.025143678161 -4954.479406130268)",
+      "Nbr_Voisins": 5,
+      "surface_voisins": 16468.0
+    },
+    {
+      "Node": "7355",
+      "Date": "2019/03",
+      "Classe_String": "Forets",
+      "Classe_int": 4,
+      "Aire": 3294.7928859016893,
+      "Perimetre": 1138.1169395398797,
+      "Largeur": 87.0,
+      "Hauteur": 141.0,
+      "Rectangularity": 0.2685899474934123,
+      "Elongation": 1.6206896551724137,
+      "I_Miller": 0.0319642271963028,
+      "Mean": 58.243,
+      "std": 21.332,
+      "variance": 456.507,
+      "centroid": "POINT (6297.062255049744 -4818.929002110341)",
+      "Nbr_Voisins": 6,
+      "surface_voisins": 36874.0
+    }
+  ],
+  [
+    {
+      "motif_id": 10,
+      "score": 5.4709360597371415e-08,
+      "size": 3,
+      "Relation": [
+        "5981/2021/11 --- Adjacence ---> 5962/2021/11 avec score = 1.0",
+        "5981/2021/11 --- Adjacence ---> 5955/2021/11 avec score = 1.0",
+        "5962/2021/11 --- Adjacence ---> 5955/2021/11 avec score = 1.0"
+      ]
+    },
+    {
+      "Node": "5981",
+      "Date": "2021/11",
+      "Classe_String": "Zones Urbanisees",
+      "Classe_int": 0,
+      "Aire": 4236.4462258864905,
+      "Perimetre": 1275.7554246454947,
+      "Largeur": 157.0,
+      "Hauteur": 162.0,
+      "Rectangularity": 3223.909144196952,
+      "Elongation": 1.0318471337579618,
+      "I_Miller": 0.0327097115903972,
+      "Mean": 98.888,
+      "std": 27.254,
+      "variance": 744.771,
+      "centroid": "POINT (3223.9091441969517 -4672.713599062134)",
+      "Nbr_Voisins": 14,
+      "surface_voisins": 200695.0
+    },
+    {
+      "Node": "5962",
+      "Date": "2021/11",
+      "Classe_String": "Zones Urbanisees",
+      "Classe_int": 0,
+      "Aire": 3870.910035217861,
+      "Perimetre": 1023.9563342396416,
+      "Largeur": 120.0,
+      "Hauteur": 91.0,
+      "Rectangularity": 3266.115345137285,
+      "Elongation": 1.3186813186813187,
+      "I_Miller": 0.0463938130479716,
+      "Mean": 40.551,
+      "std": 17.495,
+      "variance": 307.778,
+      "centroid": "POINT (3266.115345137285 -4576.077623813189)",
+      "Nbr_Voisins": 6,
+      "surface_voisins": 157629.0
+    },
+    {
+      "Node": "5955",
+      "Date": "2021/11",
+      "Classe_String": "Zones Urbanisees",
+      "Classe_int": 0,
+      "Aire": 4408.288123227926,
+      "Perimetre": 787.1212186068327,
+      "Largeur": 110.0,
+      "Hauteur": 110.0,
+      "Rectangularity": 3191.638575935106,
+      "Elongation": 1.0,
+      "I_Miller": 0.0894121619714088,
+      "Mean": 81.3,
+      "std": 32.495,
+      "variance": 1069.732,
+      "centroid": "POINT (3191.638575935106 -4555.096890491212)",
+      "Nbr_Voisins": 5,
+      "surface_voisins": 19231.0
+    }
+  ]
+]
