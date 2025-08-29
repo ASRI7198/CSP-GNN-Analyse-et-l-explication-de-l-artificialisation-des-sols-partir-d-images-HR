@@ -1,4 +1,4 @@
-# ANR Hérelles — Méthode hybride GNN + CSP pour l’analyse des changements environnementaux
+# ANR Hérelles — Méthode hybride GNN + CSP pour l’analyse des changements environnementaux à partir d’images satellitaires
 
 ## Contexte
 Ce stage s’inscrit dans le cadre du projet **ANR Hérelles**, dont l’objectif est d’analyser et de modéliser les dynamiques de changements environnementaux à partir d’images satellitaires **à haute résolution**.
@@ -6,7 +6,17 @@ Ce stage s’inscrit dans le cadre du projet **ANR Hérelles**, dont l’objecti
 ## Objectif
 Développer une **méthode hybride** combinant des **Graph Neural Networks (GNN)** et des **problèmes de satisfaction de contraintes (CSP)** pour **détecter** et **interpréter** les changements liés à l’**artificialisation des sols**.
 
-## Méthodologie (3 étapes)
+## Méthodologie
+>
+> ![Schéma de la méthodologie](methodologie.png)
+>
+> **Option taille contrôlée (HTML, compatible GitHub) :**
+>
+> <p align="center">
+>   <img src="images/methodologie.png" alt="Schéma de la méthodologie" width="780">
+> </p>
+> <p align="center"><em>Figure 1 — Schéma de la méthodologie.</em></p>
+
 1. **Définition de motifs géospatiaux** représentant des configurations typiques d’artificialisation.  
 2. **Détection de motifs complexes** à l’aide des **GNN**.  
 3. **Formalisation et résolution** de ces motifs via un **solveur CSP** afin **d’intégrer** et **vérifier** les **contraintes spatiales et temporelles**.
