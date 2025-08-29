@@ -602,10 +602,106 @@ https://drive.google.com/drive/folders/1yym5qWhOCaro-jY7DkBYTQwLnL5jsQqN?usp=sha
 
 ---
 
-## Prérequis et installation
+# Validation de motifs par CSP (Choco Solver)
 
-1. Créez et activez un environnement Python :
-   ```bash
-   conda create -n mon_env python=3.10
-   conda activate mon_env
-   ```
+Ce projet valide des **motifs** sur des **graphes spatio-temporels** via un **CSP** construit avec **Choco Solver**.  
+Entrées : un graphe ST (JSON) et un ou plusieurs motifs (Java ou JSON).  
+Sorties : les **occurrences** du motif (console et/ou export).
+
+---
+
+## Arborescence
+
+```
+.
+├── pom.xml
+├── .gitignore
+├── src/
+│   └── main/
+│       └── java/
+│           ├── Motifs/                      # (optionnel) motifs codés en Java
+│           └── org/example/
+│               ├── BuildResult.java         # structure & affichage des solutions
+│               ├── CSPModelBuilder.java     # création variables & contraintes CSP
+│               ├── Edge.java                # arête d’un motif (u, v, type)
+│               ├── EdgeType.java            # SPATIAL / TEMPORAL / ...
+│               ├── Inspect.java             # utilitaire d’inspection du graphe
+│               ├── MotifJsonLoader.java     # chargement motif au format JSON
+│               ├── Pattern_M.java           # exemple de motif en Java
+│               ├── STGraph.java             # graphe spatio-temporel (noeuds, arêtes, attrs)
+│               ├── STLoader.java            # loader du graphe (JSON → STGraph)
+│               ├── SolveAllPatterns.java    # résolution d’une liste de motifs
+│               └── SolvePattern.java        # résolution d’un motif unique
+└── src/main/java/org/example/stgraph4.json  # exemple de graphe ST
+```
+
+> Astuce : déplacez les JSON dans `src/main/resources/` et chargez‐les via le **classpath**.
+
+---
+
+## Principe
+
+1. **Chargement du graphe** (`STLoader` → `STGraph`).  
+2. **Chargement du motif** :  
+   - **Java** (ex. `Pattern_M.java`), ou  
+   - **JSON** via `MotifJsonLoader`.  
+3. **Construction du CSP** (`CSPModelBuilder`) :  
+   - Variables : une par nœud du motif (domaine = candidats du graphe).  
+   - Contraintes :
+     - **Injectivité** (`AllDifferent`) : pas de réutilisation d’un même nœud.
+     - **Spatiales** (`EdgeType.SPATIAL`) : voisinage/adjacence même couche.
+     - **Temporelles** (`EdgeType.TEMPORAL`) : ordre strict sur le temps/couche.
+     - (Optionnel) **filtres d’attributs** (type, aire, etc.).  
+4. **Résolution** (Choco) → **occurrences** imprimées/exportées (`BuildResult`).
+
+---
+
+## Dépendances
+
+- **JDK** 11+ (idéalement 17+)  
+- **Maven** 3.8+  
+- **Choco Solver** (déclaré dans `pom.xml`)  
+
+---
+
+## Installation
+
+```bash
+# À la racine du projet
+mvn -q -DskipTests package
+```
+
+Le jar est généré dans `target/`. Vous pouvez aussi exécuter les classes `main` depuis l’IDE.
+
+---
+
+### 1) Inspecter un graphe
+```bash
+mvn -q exec:java   -Dexec.mainClass=org.example.Inspect   -Dexec.args="--graph src/main/java/org/example/stgraph4.json"
+```
+
+### 2) Résoudre **un motif**
+- Motif défini en **Java** (ex. `Pattern_M`) :
+```bash
+mvn -q exec:java   -Dexec.mainClass=org.example.SolvePattern   -Dexec.args="--graph src/main/java/org/example/stgraph4.json --pattern M"
+```
+
+- Motif défini en **JSON** :
+```bash
+mvn -q exec:java   -Dexec.mainClass=org.example.SolvePattern   -Dexec.args="--graph src/main/java/org/example/stgraph4.json --motif chemin/vers/motif.json"
+```
+
+### 3) Résoudre **plusieurs motifs**
+```bash
+mvn -q exec:java   -Dexec.mainClass=org.example.SolveAllPatterns   -Dexec.args="--graph src/main/java/org/example/stgraph4.json --limit 100"
+```
+---
+
+## Ajouter un motif
+
+- **En Java** : créer `Pattern_X.java` dans `Motifs/` (nœuds, arêtes typées, filtres).  
+- **En JSON** : créer `motif_X.json` (structure ci-dessus) et le charger via `MotifJsonLoader`.
+
+---
+
+
