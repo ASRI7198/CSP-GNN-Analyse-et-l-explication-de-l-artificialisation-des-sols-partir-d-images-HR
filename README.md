@@ -394,55 +394,218 @@ https://drive.google.com/drive/folders/1yym5qWhOCaro-jY7DkBYTQwLnL5jsQqN?usp=sha
    ```
 
 
+<!-- ===== Hero / Header ===== -->
+<div align="center">
+
 # 3 - Détection de motifs d'artificialisation
 
-Cette étape implémente la détection de motifs d'artificialisation à partir d'un graphe spatio-temporel à l'aide d'un Graphe Neuronal (GNN) : méthode Multi\_SPminer.
+</div>
+
+<p align="center">
+  <img alt="python" src="https://img.shields.io/badge/Python-%3E%3D3.10-informational" />
+  <img alt="GNN" src="https://img.shields.io/badge/GNN-Multi_SPminer-blue" />
+  <img alt="NetworkX" src="https://img.shields.io/badge/Graphs-NetworkX-blue" />
+  <img alt="Torch" src="https://img.shields.io/badge/Deep%20Learning-PyTorch-red" />
+</p>
+
+---
+
+Cette étape implémente la détection de motifs d'artificialisation à partir d'un graphe spatio-temporel à l'aide d'un Graphe Neuronal (GNN) : méthode **Multi_SPminer**.
+
+---
+
+<details>
+<summary><strong>📑 Sommaire</strong></summary>
+
+- [3 - Détection de motifs d'artificialisation](#3---détection-de-motifs-dartificialisation)
+  - [Structure du projet](#structure-du-projet)
+  - [Description par dossier et fichier](#description-par-dossier-et-fichier)
+  - [Données](#données)
+  - [Prérequis et installation](#prérequis-et-installation)
+</details>
+
+---
 
 ## Structure du projet
 
 Le dépôt est organisé en deux phases principales :
 
-### 1. Embedding\_phase
+```
+├── Embedding_phase/
+│   ├── Generate_data/
+│   │   ├── Generate_training.py
+│   │   ├── Preprocess_attributes.py
+│   │   ├── Pretreatment.ipynb
+│   │   └── config.py
+│   ├── MGCN/
+│   │   ├── Embedding_Loss.py
+│   │   └── Multi_GCN.py
+│   └── Main/
+│       ├── Analyze_Embeddings.ipynb
+│       ├── Evaluation des embeddings.ipynb
+│       ├── Test.py
+│       ├── Train.py
+│       └── main.py
+├── Visualisation/
+└── Search_phase/
+    ├── Search.py
+    └── search_test.ipynb
+```
 
-Ce dossier contient les sous-modules suivants :
+---
 
-* **generate\_data** : génère les données de sous-graphes A et B ainsi que leurs labels, en utilisant un nombre de hops (K-hop) et une taille maximale de graphe.
-* **MGCN** : définition de l’architecture du modèle MGCN et de la fonction de perte associée.
-* **main** : script principal (`main.py`) qui permet de lancer le programme, avec deux modes :
+## Description par dossier et fichier
 
-  * `train` : pour l’entraînement du modèle.
-  * `test` : pour l’évaluation et l’analyse.
-* **embeddings\_analysis** : calcul et statistiques des embeddings produits.
-* **evaluation** : évaluation des embeddings par régression logistique.
-* **visualisation** : génération des courbes de perte (train et validation) par epoch.
+> ℹ️ **Remarque** — Les descriptions ci‑dessous détaillent le rôle **attendu** de chaque fonction compte tenu des noms de fichiers. Adaptez les intitulés si vos signatures diffèrent.
 
-### 2. Search\_phase
+### 1) `Embedding_phase/Generate_data`
 
-Ce dossier contient :
+<details>
+<summary><code>Generate_training.py</code> — génération du dataset supervision (paires de sous‑graphes A/B + labels)</summary>
 
-* **search.py** : fonctions pour l’extraction des motifs d’artificialisation.
-* **search\_test.py** : script pour appliquer ces fonctions sur le graphe spatio-temporel.
-* **update\_json.py** : utilitaire pour modifier ou enrichir les fichiers JSON de résultats (ajout d’attributs, réglages des paramètres, etc.).
+#### Fonctions (attendues)
+- `build_k_hop_subgraph(G, center_id, k, max_nodes)` : extrait le sous‑graphe **k‑hop** autour d’un nœud pivot, en bornant la taille maximale.
+- `pair_label(subA, subB)` : calcule le **label** de la paire (ex. même motif / motif différent / type de relation).
+- `generate_pairs(G, k, max_nodes, sampling, seed)` : itère sur le graphe spatio‑temporel pour produire des paires équilibrées A/B.
+- `to_example(subG)` : convertit un sous‑graphe en **exemple** (features, edges, masque, meta).
+- `save_dataset(examples, out_dir)` : sérialise le dataset (NPZ/JSON/Parquet) et l’index des paires.
+- `load_dataset(path)` : charge un dataset généré pour ré‑entraînement ou test.
+
+#### Entrées / Sorties
+- **Entrées** : graphe spatio‑temporel `G`, paramètres `k`, `max_nodes`, stratégie `sampling`.
+- **Sorties** : `{X, edge_index, y, meta}` par paire, fichiers sur disque (train/val/test).
+</details>
+
+<details>
+<summary><code>Preprocess_attributes.py</code> — préparation des attributs de nœuds/arêtes</summary>
+
+#### Fonctions (attendues)
+- `load_graphml(path)` : lit un GraphML et retourne un (Multi)DiGraph NetworkX.
+- `compute_node_features(G, columns)` : construit la **matrice d’attributs** des nœuds (aires, périmètres, compacités, etc.).
+- `compute_edge_features(G, columns=None)` : (optionnel) construit des attributs d’arêtes (type relation, distance, année).
+- `normalize_features(X, method="standard")` : standardisation/min‑max et sauvegarde des paramètres de normalisation.
+- `save_features(X, path)` / `load_features(path)` : I/O des matrices d’attributs.
+- `split_train_val_test(ids, ratios, seed)` : crée des splits reproductibles.
+
+#### Entrées / Sorties
+- **Entrées** : fichiers `.graphml.xml` ou `.csv` d’attributs.
+- **Sorties** : matrices **X**, éventuelles **E**, index de splits.
+</details>
+
+<details>
+<summary><code>Pretreatment.ipynb</code> — notebook d’orchestration du prétraitement</summary>
+
+- Pipeline pas‑à‑pas : chargement des graphes, extraction features, normalisation, vérifications de qualité, export.
+</details>
+
+<details>
+<summary><code>config.py</code> — configuration centralisée</summary>
+
+#### Contenu (attendu)
+- Hyperparamètres : `K_HOP`, `MAX_NODES`, `BATCH_SIZE`, `LR`, `EPOCHS`, `HIDDEN_DIMS`, `DROPOUT`.
+- Chemins : `DATA_ROOT`, `OUT_DIR`, `LOG_DIR`, `CKPT_DIR`.
+- Aléas & device : `SEED`, `DEVICE` (`"cpu"`/`"cuda"`).
+</details>
+
+### 2) `Embedding_phase/MGCN`
+
+<details>
+<summary><code>Embedding_Loss.py</code> — fonctions de perte pour l’apprentissage d’embeddings</summary>
+
+#### Fonctions (attendues)
+- `supervised_contrastive_loss(z, y, temperature=0.1)` : rapproche les embeddings de **même label**, éloigne les autres.
+- `triplet_margin_loss(a, p, n, margin=1.0)` : ancre/positif/négatif pour structurer l’espace latent.
+- `classification_loss(logits, y, weight=None)` : perte de classification (ex. BCE/CE) quand un classifieur est joint.
+- `regularization(embeddings, l2=1e-5)` : pénalité L2/L1 sur les vecteurs latents.
+</details>
+
+<details>
+<summary><code>Multi_GCN.py</code> — architecture du modèle MGCN</summary>
+
+#### Eléments (attendus)
+- `class MultiGCN(nn.Module)` : empilement de couches GCN/GAT/GIN (selon variante), pooling global (mean/max/attention).
+- `forward(x, edge_index, batch=None, edge_attr=None)` : produit **embeddings** et/ou **logits**.
+- `encode_subgraph(data)` : encodage d’un sous‑graphe en vecteur latent.
+- `readout(node_embeddings, batch)` : agrégation par graphe (global pooling).
+</details>
+
+### 3) `Embedding_phase/Main`
+
+<details>
+<summary><code>Train.py</code> — boucle d’entraînement</summary>
+
+#### Fonctions (attendues)
+- `set_seed(seed)` : reproductibilité (torch, numpy, python).
+- `build_loaders(dataset, batch_size, num_workers=0)` : DataLoaders train/val/test.
+- `train_one_epoch(model, loader, optimizer, loss_fns, scheduler=None)` : passe avant, calcul des pertes multiples, rétropropagation.
+- `evaluate(model, loader, metrics=("loss","auc","f1"))` : évalue et retourne un dictionnaire de métriques.
+- `fit(cfg)` : orchestre **n** époques avec early‑stopping et sauvegarde de checkpoints.
+- `save_checkpoint(state, path)` / `load_checkpoint(model, path)` : gestion des poids et de l’optimiseur.
+</details>
+
+<details>
+<summary><code>Test.py</code> — inférence et export des embeddings</summary>
+
+#### Fonctions (attendues)
+- `load_model(cfg, ckpt_path)` : reconstruit le modèle et charge les poids.
+- `infer_embeddings(model, loader)` : calcule les embeddings sur un split donné.
+- `evaluate_embeddings(z, y, metrics=("auc","f1","acc"))` : métriques **downstream** (option régression logistique).
+- `export_embeddings(z, meta, out_path)` : sauvegarde (npz/csv/parquet) pour analyse/recherche de motifs.
+</details>
+
+<details>
+<summary><code>main.py</code> — point d’entrée</summary>
+
+#### Fonctions / CLI (attendues)
+- `parse_args()` : `--mode {train,test}`, `--config`, `--ckpt`, etc.
+- `main_train(cfg)` / `main_test(cfg)` : lance l’un des deux workflows.
+- `if __name__ == "__main__":` : dispatch vers **train** ou **test**.
+</details>
+
+<details>
+<summary><code>Analyze_Embeddings.ipynb</code> & <code>Evaluation des embeddings.ipynb</code></summary>
+
+- Visualisations (t‑SNE/UMAP), statistiques d’intra/inter‑classe, courbes ROC/PR, ablations.
+</details>
+
+### 4) `Visualisation/`
+
+- Actifs de visualisation (courbes de perte, figures t‑SNE/UMAP), scripts/nb facultatifs pour tracer les résultats.
+
+### 5) `Search_phase`
+
+<details>
+<summary><code>Search.py</code> — extraction des motifs d’artificialisation</summary>
+
+#### Fonctions (attendues)
+- `load_embeddings(path_or_dir)` : charge les vecteurs latents produits en phase d’embedding.
+- `prepare_index(G, z, meta=None)` : indexe nœuds/sous‑graphes pour les requêtes (ex. faiss/annoy ou simple cosine).
+- `score_subgraph(subG, z)` : attribue un **score** de motif (similarité, seuils).
+- `search_patterns(G, z, top_k=50, thresholds=None)` : parcours/échantillonnage, scoring et **sélection** des meilleurs motifs.
+- `postprocess(candidates, nms=True, overlap_thr=0.5)` : dédoublonnage/fusion de motifs proches.
+- `export_json(results, out_path)` : écrit les motifs détectés (JSON) pour inspection et pour le CSP en aval.
+</details>
+
+<details>
+<summary><code>search_test.ipynb</code> — démonstration de la recherche</summary>
+
+- Notebook d’exemple : chargement des embeddings, lancement de `search_patterns`, visualisation rapide des motifs trouvés.
+</details>
+
+---
 
 ## Données
 
-Les données produites par `generate_data` sont volumineuses (entre 2 Go et 38 Go).
+Les données produites par `generate_data` sont volumineuses (entre **2 Go** et **38 Go**).  
+Le graphe spatio-temporel complet et les résultats des motifs d’artificialisation (ensemble de fichiers JSON, un par configuration de paramètres et données paires) sont disponibles dans le dossier partagé Drive :  
+https://drive.google.com/drive/folders/1yym5qWhOCaro-jY7DkBYTQwLnL5jsQqN?usp=sharing
 
-Le graphe spatio-temporel complet et les résultats des motifs d’artificialisation (ensemble de fichiers JSON, un par configuration de paramètres et données paires) sont disponibles dans le dossier partagé Drive : https://drive.google.com/drive/folders/1yym5qWhOCaro-jY7DkBYTQwLnL5jsQqN?usp=sharing.
+---
 
 ## Prérequis et installation
 
 1. Créez et activez un environnement Python :
-
    ```bash
    conda create -n mon_env python=3.10
    conda activate mon_env
    ```
-
-## Notes complémentaires
-
-* J’ai développé l’intégralité du code en m’inspirant de plusieurs dépôts GitHub existants ; l’architecture et les fonctionnalités ont été conçues et optimisées spécifiquement pour ce projet.
-
-
-
-
