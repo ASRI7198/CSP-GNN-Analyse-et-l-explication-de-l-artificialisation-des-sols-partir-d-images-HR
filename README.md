@@ -13,7 +13,7 @@ Développer une **méthode hybride** combinant des **Graph Neural Networks (GNN)
 > **Option taille contrôlée (HTML, compatible GitHub) :**
 >
 > <p align="center">
->   <img src="images/methodologie.png" alt="Schéma de la méthodologie" width="780">
+>   <img src="images/methodologie.jpg" alt="Schéma de la méthodologie" width="780">
 > </p>
 > <p align="center"><em>Figure 1 — Schéma de la méthodologie.</em></p>
 
