@@ -1,6 +1,6 @@
-2 - Extraction et Analyse de Graphes Spatio‐Temporels
+# 2 - Extraction et Analyse de Graphes Spatio‐Temporels
 
-Ce projet permet de :
+Cette étape vise à :
 
 - Préparer et convertir des données géographiques (formats GeoPackage) vers des CSV exploitables.
 - Créer des graphes spatiaux à partir de caractéristiques de polygones (aires, périmètres, etc.).
