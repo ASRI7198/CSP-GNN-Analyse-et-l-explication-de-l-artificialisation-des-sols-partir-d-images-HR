@@ -1,3 +1,227 @@
+# 1 - Segmentation et classification avec QGIS
+
+Ce dépôt décrit **l’étape “Segmentation & Classification”** d’un projet d’occupation des sols sous **QGIS**.  
+Il documente les données attendues, le flux de travail pas-à-pas, **les variables calculées**, **les classes étudiées**, ainsi que **les méthodes et résultats** utilisés dans notre étude.
+
+---
+
+## ✅ Prérequis
+
+- **QGIS 3.28+** (ou version plus récente)
+- Plugins recommandés (via *Extensions > Installer/Gérer les extensions…*):
+  - **Orfeo Toolbox (OTB)** — segmentation et classification avancées  
+    > Nécessite l’installation d’OTB puis la configuration dans *Traitements > Options > Fournisseurs > Orfeo Toolbox*.
+  - **Semi-Automatic Classification Plugin (SCP)** *(optionnel)* — classification et évaluation
+  - **SAGA/GRASS** *(optionnels)* — alternatives pour certaines étapes (segmentation, post-traitements)
+- Données d’imagerie (ex. Sentinel-2, orthophotos…), **géoréférencées** et **projetées** dans un CRS métrique approprié (UTM local).
+
+---
+
+## 📁 Structure du projet
+
+```
+Images/                      # Imagerie d’entrée (GeoTIFF, JP2, etc.)
+Vecteur Classes/             # Polygones d’entraînement (étiquetés), ex. classes_train.gpkg
+Classes/                     # Style, tables de légende, codes classe (.csv, .qml)
+Segmentation/                # Résultats de segmentation (raster ou vecteur)
+Classification/              # Rasters classifiés, cartes finales, masques post-traités
+Statistiques/                # Rapports: matrices de confusion, scores (OA, Kappa, F1), graphes
+Segmentation et Classification.qgz   # Fichier projet QGIS préconfiguré
+```
+
+### Convention de nommage (recommandée)
+- `Images/scene_YYYYMMDD.tif`
+- `Vecteur Classes/classes_train.gpkg` (couche: `train_polys`)
+- `Segmentation/segments_YYYYMMDD.gpkg` (couche: `segments`)
+- `Classification/classif_RF700_YYYYMMDD.tif`
+- `Statistiques/report_classif_YYYYMMDD.md`
+
+---
+
+## 🧭 Flux de travail (pas-à-pas)
+
+### 1) Préparer l’imagerie (dossier `Images/`)
+1. Déposer les rasters d’entrée (bandes empilées si possible).  
+2. Vérifier le **CRS** et reprojeter si besoin (*Raster > Projections > Reprojeter…*).  
+3. (Optionnel) Découper à l’emprise d’étude (*Traitements > GDAL > Extraction > Découper un raster par emprise*).
+
+**Résultat attendu :** `Images/scene_*.tif`
+
+---
+
+### 2) Créer les classes d’entraînement (dossier `Vecteur Classes/`)
+1. Créer un GeoPackage `classes_train.gpkg` contenant une couche polygonale `train_polys`.  
+2. Champs recommandés :
+   - `class_id` (entier) — code numérique de classe
+   - `class_name` (texte) — libellé (ex. `Zones urbanisées`, `Eaux continentales`, etc.)
+   - `fold` (entier, optionnel) — 0 = train, 1 = validation (pour l’évaluation)
+3. Numériser des **polygones homogènes** par classe couvrant la variabilité spectrale.
+
+**Résultat attendu :** `Vecteur Classes/classes_train.gpkg`
+
+---
+
+### 3) Segmentation (dossier `Segmentation/`)
+
+**Contexte de l’étude**  
+Nous avons appliqué la segmentation sur une série d’images satellitaires à l’aide du plugin **Orfeo Toolbox (OTB)**, intégré à **QGIS**. Quatre méthodes proposées par OTB ont été testées :
+
+- **Mean Shift** : regroupe les pixels similaires en fonction de leur couleur et de leur proximité spatiale. Utile pour détecter des objets bien définis.  
+- **Connected Components (CC)** : identifie les zones de pixels connectés ayant la même valeur. Méthode simple mais sensible au bruit.  
+- **Watershed** : interprète l’image comme une surface topographique et sépare les régions selon le principe des bassins versants. Utile pour distinguer des objets collés.  
+- **Profiles** : utilise les variations d’intensité (profils radiométriques) pour segmenter l’image. Adaptée aux structures linéaires comme les routes ou les rivières.
+
+**Méthode retenue** : **Mean Shift**, en raison de ses performances plus robustes pour la détection des objets dans nos données.
+
+**Export** : Les segments sont vectorisés en polygones (`segments_*.gpkg`) pour l’analyse géospatiale.
+
+---
+
+### 4) Variables calculées par segment (géométriques & contextuelles)
+
+Après la segmentation, nous avons calculé un ensemble d’**attributs géométriques et contextuels** via l’outil **“Calculer les statistiques”** de QGIS et des traitements associés.  
+Les variables retenues sont listées ci‑dessous :
+
+| Variable                 | Description                                                                 | Unité typique                 |
+|--------------------------|-----------------------------------------------------------------------------|-------------------------------|
+| `DN`                     | Identifiant unique du polygone                                              | — (identifiant)               |
+| `year`                   | Année d’acquisition                                                         | Année (ex. 2019, 2024)        |
+| `Aire`                   | Surface totale du polygone                                                  | m²                            |
+| `Perimeter`              | Longueur totale du contour du polygone                                      | m                             |
+| `Largeur`                | Largeur maximale du polygone                                                | m                             |
+| `Hauteur`                | Hauteur maximale du polygone                                                | m                             |
+| `Rectangularity`         | Mesure de la “rectangularité”                                               | Sans unité (ratio)            |
+| `Elongation`             | Mesure de l’étirement du polygone                                           | Sans unité (ratio)            |
+| `Indice_Miller`          | Indice de compacité (Miller)                                                | Sans unité (ratio)            |
+| `Multipolygone`          | Géométrie multipolygone                                                     | — (objet géométrique)         |
+| `Centroid`               | Centre de gravité géométrique                                               | Coordonnées (x, y)            |
+| `Nbr_Voisins`            | Nombre de polygones voisins adjacents                                       | Nombre entier                 |
+| `Surf_Voisins`           | Somme des surfaces des polygones voisins                                    | m²                            |
+| `Pix_Mean`               | Moyenne des valeurs de pixels contenus dans le polygone                     | Valeur numérique              |
+| `Pix_Std`                | Écart type des valeurs de pixels contenus dans le polygone                  | Valeur numérique              |
+| `Pix_Var`                | Variance des valeurs de pixels contenus dans le polygone                    | Valeur numérique              |
+
+> Remarque : adaptez les noms de champs à vos couches (ex. `seg_id`, `mean_B2`, etc.) si vous extrayez des statistiques zonales par bande.
+
+**Résultat attendu :** `Segmentation/segments_*.gpkg` enrichi avec ces variables.
+
+---
+
+### 5) Liste des classes étudiées (Niveau 1 — 2019, Montpellier Méditerranée Métropole)
+
+Le jeu d’occupation du sol (1994–2023, 48 classes au niveau 4) a été **agrégé au niveau 1** pour notre analyse 2019. Les **8 classes** retenues sont :
+
+| # | Nom de classe | Description |
+|---|---------------|-------------|
+| 1 | **Chantiers** | Zones de construction active (bâtiments, infrastructures en travaux) |
+| 2 | **Eaux continentales** | Plans d’eau naturels ou artificiels (lacs, rivières, réservoirs) |
+| 3 | **Espaces ouverts, sans ou avec peu de végétation** | Terrains non bâtis à végétation rare (sols nus, parkings, terrains vagues) |
+| 4 | **Forêts** | Zones boisées à couvert végétal dense |
+| 5 | **Réseaux routier et ferroviaire et espaces associés** | Infrastructures de transport et leurs abords (routes, gares, talus) |
+| 6 | **Zones agricoles** | Terres cultivées, pâturages, vergers |
+| 7 | **Zones de loisirs** | Espaces récréatifs (parcs, stades, terrains de golf) |
+| 8 | **Zones urbanisées** | Bâtiments, quartiers résidentiels/commerciaux, zones industrielles |
+
+Placez votre table de correspondance (`Classes/classes.csv`) pour lier `class_id`, `class_name` et une **couleur** QGIS.
+
+---
+
+### 6) Préparer l’échantillonnage d’apprentissage
+Associer les **étiquettes** (`class_id`) aux segments :
+
+1. *Vecteur > Outils de géotraitement > Intersection* entre `train_polys` et `segments`.  
+2. (Option) Dissoudre par `seg_id` en gardant la **classe majoritaire** si plusieurs classes touchent le même segment.  
+3. Conserver deux ensembles si souhaité : `fold=0` (train) et `fold=1` (validation).
+
+**Résultat attendu :** table d’échantillons avec descripteurs + `class_id`.
+
+---
+
+### 7) Classification supervisée (OTB/SCP)
+
+La classification repose sur l’image segmentée et un jeu d’entraînement annoté. Après extraction des caractéristiques, un **modèle** (p. ex. **Random Forest** ou **SVM**) est **entraîné** puis **appliqué** pour produire une carte classifiée (par segment ou par pixel).
+
+**Modèles testés et performances (↑ = meilleur)**
+
+| Modèle                     | Accuracy | Précision | Rappel | F1-score |
+|---------------------------|---------:|----------:|-------:|---------:|
+| **Random Forest (700 arbres)** | **0,81** | **0,78** | **0,81** | **0,79** |
+| Random Forest (100 arbres) | 0,551 | 0,54 | 0,55 | 0,52 |
+| Boosting                   | 0,364 | 0,13 | 0,36 | 0,18 |
+| KNN                        | 0,364 | 0,13 | 0,36 | 0,18 |
+| Naive Bayes                | 0,223 | 0,27 | 0,22 | 0,21 |
+| SVM                        | 0,213 | 0,28 | 0,21 | 0,19 |
+
+**Meilleur modèle** : **Random Forest (700 arbres)** — performances les plus élevées et segmentation/classification visuellement cohérentes.
+
+**Sorties attendues :**
+- `Classification/classif_RF700_*.tif` (raster de classes)
+- `Statistiques/` (matrices de confusion, courbes, rapport)
+
+---
+
+### 8) Post-traitements (optionnels)
+- **Filtre de majorité / lissage** pour réduire le bruit sel-poivre
+- **Morphologie** (ou *r.neighbors* via GRASS)
+- **Vectorisation** des classes d’intérêt (*Raster > Conversion > Polygones à partir de raster*)
+
+**Résultat attendu :** produits cartographiques lisibles (raster + vecteur).
+
+---
+
+## 📊 Évaluation & illustrations
+
+- **Échantillons de validation** : polygones/points indépendants (`fold=1`).  
+- **Métriques** : Accuracy, Précision, Rappel, **F1‑score** (cf. tableau ci‑dessus).  
+- **Illustrations** (déposez vos figures ici et mettez à jour les chemins) :  
+  - `Segmentation/seg1.jpg`, `Segmentation/seg2.jpg` — exemples de **segmentation Mean Shift**  
+  - `Classification/image-segmenter.jpg`, `Classification/image-colore.jpg` — **(a) Segmentation / (b) Classification**  
+  - `Classes/classes.jpg` — légende des classes
+
+---
+
+## 🎨 Styles & légende (dossier `Classes/`)
+
+- `classes.csv` : mapping `class_id,class_name,color` pour **8 classes niveau 1** ci‑dessus.  
+- Style QGIS (`.qml`) appliqué au raster de classification pour une palette cohérente.
+
+---
+
+## 🚀 Démarrage rapide
+
+1. **Ouvrir** `Segmentation et Classification.qgz` dans QGIS.  
+2. Vérifier les **chemins relatifs**.
+3. Charger `Images/scene_*.tif` et `Vecteur Classes/classes_train.gpkg`.  
+4. Lancer la **segmentation** (OTB > *Mean Shift*, méthode retenue), extraire les **variables**, **entraîner** le modèle (RF700) et **classer**.  
+5. Exporter les **rapports** dans `Statistiques/` et la carte finale dans `Classification/`.
+
+---
+
+## 🧪 Conseils pratiques
+
+- **Équilibrer** les échantillons par classe (surface/nb de segments).
+- Ajuster la **granularité** des segments pour l’échelle des objets.
+- Séparer **entraînement** et **validation** (champ `fold`).
+- Sauvegarder modèles et paramètres pour la **reproductibilité**.
+
+---
+
+## 📄 Licence / Données
+
+- Données d’occupation du sol : **Montpellier Méditerranée Métropole (1994–2023)**.  
+  Pour cette étude, **8 classes niveau 1** ont été utilisées pour **2019**.  
+- Indiquez ici la licence des données et du code (ex. MIT, CC‑BY‑SA).
+
+---
+
+## 🔧 Dépannage
+
+- OTB non détecté : configurez le chemin dans *Traitements > Options > Orfeo Toolbox*.
+- Segmentation trop fine/grossière : ajustez les paramètres Mean‑Shift (ou testez CC/Watershed/Profiles).
+- Classes confondues : ajoutez des **échantillons**, des **indices** (NDVI/NDBI/NDWI), ou testez un autre algorithme.
+
+
+
 # 2 - Extraction et Analyse de Graphes Spatio‐Temporels
 
 Cette étape vise à :
